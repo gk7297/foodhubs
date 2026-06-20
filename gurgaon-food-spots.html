@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Gurgaon Food Spots – Curated, Not Crowdsourced</title>
+<meta name="description" content="40+ hand-curated food spots in Gurgaon. 4.1+ rating, 400+ reviews. Filter by cuisine and vibe." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --ink-muted: #6b6b6b;
+    --ink-faint: #b0b0b0;
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --accent: #d4500a;
+    --accent-light: #fff0ea;
+    --green: #1a7a4a;
+    --green-light: #e8f5ee;
+    --border: #e4e0d8;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+  /* HERO */
+  .hero {
+    background: var(--ink);
+    color: #fff;
+    padding: 3.5rem 1.5rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212,80,10,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(212,80,10,0.4);
+    padding: 4px 14px;
+    border-radius: 99px;
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    color: #fff;
+    margin-bottom: .75rem;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.6);
+    max-width: 440px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.65;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat strong {
+    display: block;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .hero-stat span { font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: .04em; }
+
+  /* FILTER BAR */
+  .filter-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+  }
+  .filter-inner { max-width: 960px; margin: 0 auto; }
+  .search-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: .75rem;
+  }
+  .search-box {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    outline: none;
+    transition: border-color .15s;
+  }
+  .search-box:focus { border-color: var(--accent); }
+  .result-count {
+    font-size: 13px;
+    color: var(--ink-muted);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .filter-group { margin-bottom: .5rem; }
+  .filter-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: .4rem;
+  }
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .pill {
+    padding: 5px 13px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    font-size: 12.5px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    background: var(--surface);
+    color: var(--ink-muted);
+    transition: all .14s;
+    user-select: none;
+  }
+  .pill:hover { border-color: var(--accent); color: var(--accent); }
+  .pill.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .pill[data-type="vibe"].active { background: var(--accent); border-color: var(--accent); }
+
+  /* CARDS GRID */
+  .cards-section { max-width: 960px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+  .section-meta {
+    font-size: 13px;
+    color: var(--ink-muted);
+    margin-bottom: 1.25rem;
+  }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    transition: box-shadow .15s, transform .12s;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .card:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-1px);
+  }
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .card-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .card-area {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .card-area svg { flex-shrink: 0; }
+  .rating-chip {
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .rating-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--green);
+  }
+  .rating-sub { font-size: 11px; color: var(--ink-faint); }
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 99px;
+  }
+  .badge-c { background: var(--green-light); color: var(--green); }
+  .badge-v { background: var(--accent-light); color: var(--accent); }
+  .dish-hint {
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    line-height: 1.55;
+    font-style: italic;
+  }
+  .card-footer {
+    margin-top: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .price-tag {
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: .04em;
+  }
+  .maps-link {
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    transition: opacity .12s;
+  }
+  .maps-link:hover { opacity: .75; }
+  .no-results {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--ink-muted);
+    font-size: 15px;
+  }
+  .no-results strong { display: block; font-size: 2rem; margin-bottom: .5rem; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    padding: 2rem 1.5rem;
+    font-size: 12px;
+    letter-spacing: .04em;
+  }
+  footer strong { color: #fff; }
+
+  @media (max-width: 500px) {
+    .hero { padding: 2.5rem 1rem 2rem; }
+    .hero-stats { gap: 1.25rem; }
+    .filter-wrap { padding: .75rem 1rem; }
+    .cards-section { padding: 1rem 1rem 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-tag">Gurgaon · Curated Food Guide</div>
+  <h1>The spots that <span>actually</span> deliver.</h1>
+  <p>Every place here is 4.1+ rated with 400+ real Google reviews. No ads, no paid listings — just honest curation.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong id="stat-total">42</strong><span>Verified Spots</span></div>
+    <div class="hero-stat"><strong>4.1+</strong><span>Min Rating</span></div>
+    <div class="hero-stat"><strong>400+</strong><span>Min Reviews</span></div>
+  </div>
+</header>
+
+<div class="filter-wrap">
+  <div class="filter-inner">
+    <div class="search-row">
+      <input class="search-box" type="search" id="search" placeholder="Search by name, area or cuisine…" autocomplete="off" />
+      <span class="result-count" id="count">42 spots</span>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Cuisine</div>
+      <div class="pills" id="cuisine-pills">
+        <button class="pill active" data-type="cuisine" data-val="All">All</button>
+        <button class="pill" data-type="cuisine" data-val="North Indian">North Indian</button>
+        <button class="pill" data-type="cuisine" data-val="South Indian">South Indian</button>
+        <button class="pill" data-type="cuisine" data-val="Asian">Asian</button>
+        <button class="pill" data-type="cuisine" data-val="Italian / Pizza">Italian / Pizza</button>
+        <button class="pill" data-type="cuisine" data-val="Street Food">Street Food</button>
+        <button class="pill" data-type="cuisine" data-val="Cafe / Continental">Cafe / Continental</button>
+      </div>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Vibe</div>
+      <div class="pills" id="vibe-pills">
+        <button class="pill active" data-type="vibe" data-val="All">All</button>
+        <button class="pill" data-type="vibe" data-val="Date Night">Date Night</button>
+        <button class="pill" data-type="vibe" data-val="Rooftop">Rooftop</button>
+        <button class="pill" data-type="vibe" data-val="Family">Family</button>
+        <button class="pill" data-type="vibe" data-val="Nightlife">Nightlife</button>
+        <button class="pill" data-type="vibe" data-val="Hidden Gem">Hidden Gem</button>
+        <button class="pill" data-type="vibe" data-val="Brunch">Brunch</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="cards-section">
+  <p class="section-meta" id="section-meta">Showing all 42 spots · sorted by rating</p>
+  <div class="cards-grid" id="grid"></div>
+</section>
+
+<footer>
+  <strong>Gurgaon Food Spots</strong> · Curated with Google Reviews data · 4.1+ rating · 400+ reviews minimum
+</footer>
+
+<script>
+const SPOTS = [
+  {name:"Punjab Grill",area:"Cyber Hub",rating:4.8,reviews:7537,cuisine:"North Indian",vibes:["Date Night","Family"],dish:"Butter chicken · paneer lababdar · amritsari kulcha",price:"₹₹₹",maps:"https://maps.google.com/?cid=1744681727668558123"},
+  {name:"Punjab Grill",area:"Sector 29",rating:4.8,reviews:3629,cuisine:"North Indian",vibes:["Date Night","Family"],dish:"Butter chicken · varqi paratha – book in advance",price:"₹₹₹",maps:"https://maps.google.com/?q=Punjab+Grill+Sector+29+Gurgaon"},
+  {name:"Mustard Madras",area:"Cyber Hub",rating:4.8,reviews:2227,cuisine:"South Indian",vibes:["Family","Brunch"],dish:"Ghee podi masala dosa · filter coffee · neer dosa",price:"₹₹",maps:"https://maps.google.com/?cid=14096812558775559142"},
+  {name:"Mustard Madras",area:"Sector 29",rating:4.7,reviews:1581,cuisine:"South Indian",vibes:["Family","Brunch"],dish:"Ghee roast chicken · ghee podi dosa · malabar fish fry",price:"₹₹",maps:"https://maps.google.com/?q=Mustard+Madras+Sector+29+Gurgaon"},
+  {name:"Diablo",area:"Cyber Hub",rating:4.7,reviews:1996,cuisine:"Asian",vibes:["Nightlife","Date Night","Rooftop"],dish:"Tandoori taco · crystal veg dimsums – deep house vibes",price:"₹₹₹",maps:"https://maps.google.com/?cid=15901322498152230754"},
+  {name:"Copper Chimney",area:"Cyber Hub",rating:4.7,reviews:1830,cuisine:"North Indian",vibes:["Family","Date Night"],dish:"Rawalpindi gosht · paneer butter masala – reserve ahead",price:"₹₹₹",maps:"https://maps.google.com/?cid=14096812558775559142"},
+  {name:"SOCA Brewery & Lounge",area:"Sector 30",rating:4.8,reviews:1517,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Craft beer · veg sushi · dim sums – great birthday spot",price:"₹₹₹",maps:"https://maps.google.com/?q=SOCA+Brewery+Gurgaon+Sector+30"},
+  {name:"Folks – Pub & Brewery",area:"Sector 66",rating:4.8,reviews:1125,cuisine:"Cafe / Continental",vibes:["Nightlife","Rooftop","Date Night"],dish:"Craft beer · veg exotic dimsums · sports bar feel",price:"₹₹",maps:"https://maps.google.com/?q=Folks+Pub+Brewery+Gurgaon+Sector+66"},
+  {name:"Porche Brewery",area:"Golf Course Rd",rating:4.7,reviews:609,cuisine:"Cafe / Continental",vibes:["Date Night","Nightlife"],dish:"In-house craft beers · cream cheese dumplings · risotto",price:"₹₹₹",maps:"https://maps.google.com/?q=Porche+Brewery+Golf+Course+Road+Gurgaon"},
+  {name:"Grotto Pizzeria",area:"Galleria Market",rating:4.7,reviews:2144,cuisine:"Italian / Pizza",vibes:["Date Night","Hidden Gem"],dish:"Popeye pizza · truffle pizza · lemon gnocchi",price:"₹₹",maps:"https://maps.google.com/?q=Grotto+Pizzeria+Galleria+Market+Gurgaon"},
+  {name:"Sandoz Restaurant",area:"Golf Course Rd",rating:4.7,reviews:2603,cuisine:"North Indian",vibes:["Family","Date Night"],dish:"Punjabi butter chicken · amritsari dal makhni · missi roti",price:"₹₹",maps:"https://maps.google.com/?q=Sandoz+Restaurant+Golf+Course+Road+Gurgaon"},
+  {name:"Bruno's Pizzeria",area:"Galleria Market",rating:4.8,reviews:1246,cuisine:"Italian / Pizza",vibes:["Date Night","Hidden Gem"],dish:"G H Spot pizza · sourdough base – artisan Neapolitan style",price:"₹₹",maps:"https://maps.google.com/?q=Brunos+Pizzeria+Galleria+Market+Gurgaon"},
+  {name:"Daryaganj",area:"Ambience Mall",rating:4.6,reviews:3263,cuisine:"North Indian",vibes:["Family","Date Night"],dish:"OG butter chicken · dahi ke kebab · garlic naan",price:"₹₹₹",maps:"https://maps.google.com/?cid=1744681727668558123"},
+  {name:"Burma Burma",area:"Cyber Hub",rating:4.6,reviews:3720,cuisine:"Asian",vibes:["Date Night","Hidden Gem"],dish:"Khow Suey · samosa soup · tea leaf salad",price:"₹₹₹",maps:"https://maps.google.com/?cid=15901322498152230754"},
+  {name:"Big Pitcher Brewery",area:"Sector 29",rating:4.6,reviews:1892,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Fresh tap beer · dahi ke kebab · mezze platter",price:"₹₹",maps:"https://maps.google.com/?q=Big+Pitcher+Brewery+Sector+29+Gurgaon"},
+  {name:"P.F. Chang's",area:"Cyber Hub",rating:4.6,reviews:1430,cuisine:"Asian",vibes:["Family","Date Night"],dish:"Butter chilli mushroom · vegetarian Tom Yum · sticky toffee pudding",price:"₹₹₹",maps:"https://maps.google.com/?q=PF+Changs+CyberHub+Gurgaon"},
+  {name:"The Big Tree",area:"Golf Course Rd",rating:4.5,reviews:4709,cuisine:"Cafe / Continental",vibes:["Brunch","Date Night","Family"],dish:"Non-veg kebab platter · sundried tomato pasta · paprika pizza",price:"₹₹",maps:"https://maps.google.com/?q=The+Big+Tree+Cafe+Gurgaon"},
+  {name:"TUCKINN Fresh Beer Cafe",area:"Sohna Road",rating:4.7,reviews:1278,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Mango beer · chilli chicken · live IPL screenings",price:"₹₹",maps:"https://maps.google.com/?q=TUCKINN+Sohna+Road+Gurgaon"},
+  {name:"BANNG",area:"Golf Course Rd",rating:4.5,reviews:512,cuisine:"Asian",vibes:["Date Night","Hidden Gem"],dish:"Clear soup · pad see ew · mala crushed cucumber salad",price:"₹₹₹",maps:"https://maps.google.com/?q=BANNG+Restaurant+Golf+Course+Road+Gurgaon"},
+  {name:"Sidewok",area:"Golf Course Rd",rating:4.4,reviews:1155,cuisine:"Asian",vibes:["Family","Date Night"],dish:"Steamboat soup · sweet corn chicken soup · egg fried rice",price:"₹₹",maps:"https://maps.google.com/?q=Sidewok+Golf+Course+Road+Gurgaon"},
+  {name:"Pizzeria da Susy",area:"Crosspoint Mall",rating:4.4,reviews:2020,cuisine:"Italian / Pizza",vibes:["Date Night","Family"],dish:"Neapolitan margherita · ortolana pizza · tiramisu",price:"₹₹",maps:"https://maps.google.com/?q=Pizzeria+da+Susy+Gurgaon"},
+  {name:"Downtown Diner & Fresh Beer",area:"Sector 29",rating:4.5,reviews:10689,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Fresh craft beer · pesto pasta · dal makhani",price:"₹₹",maps:"https://maps.google.com/?q=Downtown+Diner+Sector+29+Gurgaon"},
+  {name:"DiGhent Cafe",area:"Crosspoint Mall",rating:4.4,reviews:2694,cuisine:"Cafe / Continental",vibes:["Brunch","Date Night"],dish:"European breakfast · Belgian waffles · open from 8 AM",price:"₹₹₹",maps:"https://maps.google.com/?q=DiGhent+Cafe+Gurgaon"},
+  {name:"Downtown Galleria",area:"Galleria Market",rating:4.4,reviews:3222,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Fresh beer · dumplings · sports on big screens",price:"₹₹₹",maps:"https://maps.google.com/?q=Downtown+Galleria+Gurgaon"},
+  {name:"Brewocrat Brewery Skybar",area:"Sector 47",rating:4.4,reviews:2913,cuisine:"Cafe / Continental",vibes:["Nightlife","Rooftop"],dish:"Craft beer · dimsums · burgers – rooftop skybar setting",price:"₹₹",maps:"https://maps.google.com/?q=Brewocrat+Brewery+Gurgaon+Sector+47"},
+  {name:"Hamoni Cafe",area:"Sector 23A",rating:4.4,reviews:3181,cuisine:"Cafe / Continental",vibes:["Brunch","Date Night"],dish:"Palak patta chaat · pesto burrata pizza – golf course view",price:"₹₹",maps:"https://maps.google.com/?q=Hamoni+Cafe+Gurgaon"},
+  {name:"Greenr Cafe",area:"32nd Avenue",rating:4.4,reviews:2772,cuisine:"Cafe / Continental",vibes:["Brunch","Family"],dish:"Kombucha · tofu amaranth burger · gnocchi pasta – plant-based",price:"₹₹",maps:"https://maps.google.com/?q=Greenr+Cafe+Gurgaon"},
+  {name:"Under The Neem",area:"Sector 80",rating:4.4,reviews:3014,cuisine:"Cafe / Continental",vibes:["Brunch","Date Night","Hidden Gem"],dish:"Farm-fresh meals · outdoor green setting – peaceful drive-out",price:"₹₹₹",maps:"https://maps.google.com/?q=Under+The+Neem+Karma+Lakelands+Gurgaon"},
+  {name:"Clock Tower Brewery",area:"Golf Course Rd",rating:4.3,reviews:2865,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Beer samples to taste · dahi ke kebab · retro theme",price:"₹₹₹",maps:"https://maps.google.com/?q=Clock+Tower+Brewery+Golf+Course+Road+Gurgaon"},
+  {name:"21 Gun Salute",area:"Sector 29",rating:4.3,reviews:4299,cuisine:"North Indian",vibes:["Date Night","Family"],dish:"Mutton galouti kebab · laal maas · royal kheer",price:"₹₹₹",maps:"https://maps.google.com/?q=21+Gun+Salute+Sector+29+Gurgaon"},
+  {name:"VIET:NOM",area:"Cyber Hub",rating:4.3,reviews:1530,cuisine:"Asian",vibes:["Date Night","Hidden Gem"],dish:"Mango curry · blue pea jasmine rice · garlic chicken – book ahead",price:"₹₹₹",maps:"https://maps.google.com/?q=Viet+Nom+Cyber+Hub+Gurgaon"},
+  {name:"Cyber Hub SOCIAL",area:"Cyber Hub",rating:4.3,reviews:12198,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Banarasi Patiala · music from 10 PM · old-India theme",price:"₹₹₹",maps:"https://maps.google.com/?q=Cyber+Hub+Social+Gurgaon"},
+  {name:"Roots – Cafe in the Park",area:"Sector 29",rating:4.3,reviews:6063,cuisine:"Cafe / Continental",vibes:["Brunch","Family"],dish:"Beetroot tikkis · vada pao · grilled sandwich – inside a park",price:"₹₹",maps:"https://maps.google.com/?q=Roots+Cafe+Sector+29+Gurgaon"},
+  {name:"Bellagio",area:"Golf Course Ext Rd",rating:4.3,reviews:2053,cuisine:"Cafe / Continental",vibes:["Date Night","Rooftop"],dish:"Adivasi chicken · rooftop terrace · zen garden vibes",price:"₹₹₹₹",maps:"https://maps.google.com/?q=Bellagio+Gurgaon+Golf+Course+Extension"},
+  {name:"Olly",area:"Cyber Hub",rating:4.2,reviews:915,cuisine:"Cafe / Continental",vibes:["Date Night","Brunch"],dish:"Lamb ragu pasta · chicken espetada · great affogato",price:"₹₹₹",maps:"https://maps.google.com/?q=Olly+Cyber+Hub+Gurgaon"},
+  {name:"Indian Grill Room",area:"Sector 56",rating:4.2,reviews:5910,cuisine:"North Indian",vibes:["Family"],dish:"Mutton galaouti kebab · buffet lunch · great outdoor seating",price:"₹₹₹",maps:"https://maps.google.com/?q=Indian+Grill+Room+Sector+56+Gurgaon"},
+  {name:"Baba's Chicken",area:"Golf Course Rd",rating:4.2,reviews:3923,cuisine:"North Indian",vibes:["Family","Hidden Gem"],dish:"Lemon chicken · pepper chicken · butter chicken",price:"₹₹",maps:"https://maps.google.com/?q=Babas+Chicken+Gurgaon+Golf+Course+Road"},
+  {name:"Nowhere Terrace BrewPub",area:"Galleria Market",rating:4.2,reviews:2705,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Craft beer · live music evenings · barrel decor",price:"₹₹",maps:"https://maps.google.com/?q=Nowhere+Terrace+Brewpub+Gurgaon"},
+  {name:"Guftagu Cafe",area:"DLF Phase 2",rating:4.1,reviews:2377,cuisine:"Cafe / Continental",vibes:["Date Night","Nightlife"],dish:"Live music · chilli paneer · late night spot",price:"₹₹",maps:"https://maps.google.com/?q=Guftagu+Cafe+Gurgaon"},
+  {name:"Factory by Sutra",area:"Sector 29",rating:4.1,reviews:5211,cuisine:"Cafe / Continental",vibes:["Nightlife","Rooftop"],dish:"Craft beer · live bands · industrial microbrewery theme",price:"₹₹",maps:"https://maps.google.com/?q=Factory+by+Sutra+Sector+29+Gurgaon"},
+  {name:"Civil Line Wala",area:"Old Gurgaon",rating:4.2,reviews:9101,cuisine:"Street Food",vibes:["Brunch","Family","Hidden Gem"],dish:"Chole bhature · chur chur naan · lassi – open early",price:"₹",maps:"https://maps.google.com/?q=Civil+Line+Wala+Gurgaon"},
+  {name:"Shriram Dhaba",area:"Sohna Road",rating:4.1,reviews:26456,cuisine:"Street Food",vibes:["Brunch","Family"],dish:"Paranthas · sarson da saag · chai – open 24 hrs",price:"₹",maps:"https://maps.google.com/?q=Shriram+Dhaba+Gurgaon+Sohna+Road"},
+  {name:"Sardar Ji Jalebi Wale",area:"Sadar Bazar",rating:4.3,reviews:2245,cuisine:"Street Food",vibes:["Hidden Gem","Brunch"],dish:"Crispy desi ghee jalebis – 72-yr-old institution",price:"₹",maps:"https://maps.google.com/?q=Sardar+Ji+Jalebi+Wale+Gurgaon"},
+  {name:"Monu Jain Kachori Wala",area:"Sadar Bazar",rating:4.2,reviews:2780,cuisine:"Street Food",vibes:["Brunch","Hidden Gem"],dish:"Kachori sabzi · poori · bedmi puri – closes by 3 PM",price:"₹",maps:"https://maps.google.com/?q=Monu+Jain+Kachori+Wala+Gurgaon"},
+  {name:"Veer Da Chappar",area:"MG Road",rating:4.6,reviews:2345,cuisine:"North Indian",vibes:["Family","Nightlife"],dish:"Family dhaba · paranthas · open till 6 AM",price:"₹",maps:"https://maps.google.com/?q=Veer+Da+Chappar+Gurgaon"},
+];
+
+let activeCuisine = 'All';
+let activeVibe = 'All';
+let searchTerm = '';
+
+function render() {
+  const filtered = SPOTS.filter(s => {
+    const mc = activeCuisine === 'All' || s.cuisine === activeCuisine;
+    const mv = activeVibe === 'All' || s.vibes.includes(activeVibe);
+    const q = searchTerm.toLowerCase();
+    const ms = !q || s.name.toLowerCase().includes(q) || s.area.toLowerCase().includes(q) || s.cuisine.toLowerCase().includes(q) || s.dish.toLowerCase().includes(q);
+    return mc && mv && ms;
+  });
+  const sorted = [...filtered].sort((a, b) => b.rating - a.rating || b.reviews - a.reviews);
+
+  const countEl = document.getElementById('count');
+  const metaEl = document.getElementById('section-meta');
+  countEl.textContent = sorted.length + ' spot' + (sorted.length !== 1 ? 's' : '');
+  const filters = [];
+  if (activeCuisine !== 'All') filters.push(activeCuisine);
+  if (activeVibe !== 'All') filters.push(activeVibe);
+  if (searchTerm) filters.push('"' + searchTerm + '"');
+  metaEl.textContent = filters.length
+    ? 'Filtered: ' + filters.join(' · ') + ' — ' + sorted.length + ' result' + (sorted.length !== 1 ? 's' : '')
+    : 'Showing all ' + sorted.length + ' spots · sorted by rating';
+
+  const grid = document.getElementById('grid');
+  if (!sorted.length) {
+    grid.innerHTML = '<div class="no-results"><strong>🤔</strong>No spots match this combo.<br>Try adjusting your filters.</div>';
+    return;
+  }
+
+  grid.innerHTML = sorted.map(s => `
+    <article class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-name">${s.name}</div>
+          <div class="card-area">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            ${s.area}
+          </div>
+        </div>
+        <div class="rating-chip">
+          <div class="rating-num">★ ${s.rating}</div>
+          <div class="rating-sub">${(s.reviews / 1000).toFixed(s.reviews >= 10000 ? 0 : 1)}k reviews</div>
+        </div>
+      </div>
+      <div class="badges">
+        <span class="badge badge-c">${s.cuisine}</span>
+        ${s.vibes.map(v => `<span class="badge badge-v">${v}</span>`).join('')}
+      </div>
+      <div class="dish-hint">Try: ${s.dish}</div>
+      <div class="card-footer">
+        <span class="price-tag">${s.price}</span>
+        <a class="maps-link" href="${s.maps}" target="_blank" rel="noopener">
+          Open in Maps
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </div>
+    </article>
+  `).join('');
+}
+
+document.querySelectorAll('.pill').forEach(p => {
+  p.addEventListener('click', () => {
+    const type = p.dataset.type, val = p.dataset.val;
+    document.querySelectorAll(`.pill[data-type="${type}"]`).forEach(x => x.classList.remove('active'));
+    p.classList.add('active');
+    if (type === 'cuisine') activeCuisine = val;
+    else activeVibe = val;
+    render();
+  });
+});
+
+document.getElementById('search').addEventListener('input', e => {
+  searchTerm = e.target.value.trim();
+  render();
+});
+
+document.getElementById('stat-total').textContent = SPOTS.length;
+render();
+</script>
+</body>
+</html>
