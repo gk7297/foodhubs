@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gurgaon Eats — Curated Food Guide</title>
+<meta name="description" content="The best food spots in Gurgaon. Curated, not crowdsourced. 4.1+ rating, 400+ real Google reviews."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --black:#0a0a0a;
+  --gray-900:#111;
+  --gray-700:#444;
+  --gray-500:#888;
+  --gray-300:#ccc;
+  --gray-100:#f5f5f5;
+  --gray-50:#fafafa;
+  --white:#fff;
+  --accent:#111;
+  --green:#16a34a;
+  --green-bg:#f0fdf4;
+  --tag-bg:#f3f4f6;
+  --tag-color:#374151;
+  --radius-sm:8px;
+  --radius-md:12px;
+  --radius-lg:16px;
+  --radius-pill:999px;
+  --border:1px solid #e5e7eb;
+  --shadow:0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.06);
+  --shadow-hover:0 2px 8px rgba(0,0,0,.08),0 8px 24px rgba(0,0,0,.1);
+  --font:'Syne',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--white);color:var(--black);-webkit-font-smoothing:antialiased;min-height:100vh}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(12px);
+  border-bottom:var(--border);
+  padding:0 1.5rem;
+  height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:1rem;
+}
+.nav-logo{font-size:16px;font-weight:700;letter-spacing:-.02em;color:var(--black);white-space:nowrap}
+.nav-logo span{color:var(--gray-500)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-tag{
+  font-size:11px;font-weight:600;
+  background:var(--gray-100);
+  color:var(--gray-700);
+  padding:4px 10px;border-radius:var(--radius-pill);
+  white-space:nowrap;
+}
+
+/* ── HERO ── */
+.hero{
+  padding:4rem 1.5rem 3rem;
+  max-width:640px;
+  margin:0 auto;
+  text-align:center;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--gray-500);margin-bottom:1.25rem;
+}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block}
+.hero h1{
+  font-size:clamp(2.2rem,6vw,3.6rem);
+  font-weight:800;
+  line-height:1.08;
+  letter-spacing:-.04em;
+  color:var(--black);
+  margin-bottom:1rem;
+}
+.hero h1 em{font-style:normal;color:var(--gray-500)}
+.hero p{
+  font-size:1rem;font-weight:400;
+  color:var(--gray-500);
+  line-height:1.7;
+  max-width:420px;
+  margin:0 auto 2rem;
+}
+.hero-stats{
+  display:inline-flex;
+  gap:0;
+  border:var(--border);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  background:var(--white);
+}
+.hstat{
+  padding:.75rem 1.5rem;
+  text-align:center;
+  border-right:var(--border);
+}
+.hstat:last-child{border-right:none}
+.hstat-n{
+  font-size:1.4rem;font-weight:700;letter-spacing:-.03em;
+  color:var(--black);display:block;
+}
+.hstat-l{font-size:11px;font-weight:500;color:var(--gray-500);letter-spacing:.04em}
+
+/* ── FILTER BAR ── */
+.filters-wrap{
+  position:sticky;top:56px;z-index:100;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(8px);
+  border-bottom:var(--border);
+}
+.filters-inner{
+  max-width:1200px;margin:0 auto;
+  padding:.75rem 1.5rem;
+  display:flex;flex-direction:column;gap:.6rem;
+}
+.search-row{display:flex;gap:10px;align-items:center}
+.search-input{
+  flex:1;min-width:0;
+  height:40px;
+  padding:0 14px;
+  border:var(--border);
+  border-radius:var(--radius-md);
+  background:var(--gray-50);
+  font-family:var(--font);
+  font-size:14px;font-weight:500;
+  color:var(--black);
+  outline:none;
+  transition:border-color .15s,box-shadow .15s;
+}
+.search-input::placeholder{color:var(--gray-400,#9ca3af)}
+.search-input:focus{border-color:var(--black);background:var(--white);box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+.count-chip{
+  height:40px;padding:0 14px;
+  display:flex;align-items:center;
+  font-size:13px;font-weight:600;
+  color:var(--gray-700);
+  background:var(--gray-100);
+  border-radius:var(--radius-md);
+  white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+
+.filter-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.filter-group-label{
+  font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--gray-400,#9ca3af);
+  margin-right:2px;
+  flex-shrink:0;
+}
+.pill{
+  height:32px;padding:0 14px;
+  border:var(--border);
+  border-radius:var(--radius-pill);
+  background:var(--white);
+  font-family:var(--font);
+  font-size:12.5px;font-weight:500;
+  color:var(--gray-700);
+  cursor:pointer;
+  transition:all .12s;
+  white-space:nowrap;
+  display:inline-flex;align-items:center;
+}
+.pill:hover{border-color:var(--black);color:var(--black)}
+.pill.active{background:var(--black);border-color:var(--black);color:var(--white)}
+.pill-sep{width:1px;height:24px;background:var(--gray-200,#e5e7eb);margin:0 4px;flex-shrink:0}
+
+/* ── MAIN GRID ── */
+main{max-width:1200px;margin:0 auto;padding:1.5rem 1.5rem 5rem}
+.section-meta{
+  font-size:13px;font-weight:500;color:var(--gray-500);
+  margin-bottom:1.25rem;
+}
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:12px;
+}
+
+/* ── CARD ── */
+.card{
+  background:var(--white);
+  border:var(--border);
+  border-radius:var(--radius-lg);
+  padding:18px 20px;
+  display:flex;flex-direction:column;gap:12px;
+  transition:box-shadow .18s,transform .15s,border-color .15s;
+  cursor:default;
+  position:relative;
+}
+.card:hover{
+  box-shadow:var(--shadow-hover);
+  transform:translateY(-2px);
+  border-color:#d1d5db;
+}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.card-name{
+  font-size:15px;font-weight:700;letter-spacing:-.02em;
+  color:var(--black);line-height:1.3;
+}
+.card-area{
+  display:flex;align-items:center;gap:4px;
+  font-size:12px;font-weight:500;color:var(--gray-500);
+  margin-top:3px;
+}
+.card-area svg{flex-shrink:0;opacity:.6}
+.rating-block{text-align:right;flex-shrink:0}
+.rating-num{
+  font-size:16px;font-weight:700;letter-spacing:-.02em;
+  color:var(--green);
+}
+.rating-count{font-size:11px;font-weight:500;color:var(--gray-400,#9ca3af)}
+
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag{
+  display:inline-flex;align-items:center;
+  font-size:11px;font-weight:600;
+  padding:3px 9px;
+  border-radius:var(--radius-pill);
+}
+.tag-cuisine{background:#f0f9ff;color:#0369a1}
+.tag-vibe{background:#faf5ff;color:#7e22ce}
+
+.dish{
+  font-size:13px;font-weight:400;
+  color:var(--gray-500);
+  line-height:1.55;
+}
+.dish strong{font-weight:600;color:var(--gray-700)}
+
+.card-footer{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:10px;
+  border-top:var(--border);
+  gap:8px;
+  flex-wrap:wrap;
+}
+.price{
+  font-size:12px;font-weight:600;
+  color:var(--gray-400,#9ca3af);
+  letter-spacing:.04em;
+}
+.cta-links{display:flex;gap:6px;flex-wrap:wrap}
+.cta-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--font);font-size:12px;font-weight:600;
+  padding:5px 11px;
+  border-radius:var(--radius-sm);
+  text-decoration:none;
+  transition:all .12s;
+  white-space:nowrap;
+}
+.cta-maps{background:var(--black);color:var(--white)}
+.cta-maps:hover{background:#333}
+.cta-dineout{background:var(--gray-100);color:var(--gray-700);border:var(--border)}
+.cta-dineout:hover{background:var(--gray-200,#e5e7eb);color:var(--black)}
+.cta-district{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+.cta-district:hover{background:#ffedd5}
+
+/* no results */
+.no-results{
+  grid-column:1/-1;
+  text-align:center;padding:4rem 1rem;
+  color:var(--gray-500);
+}
+.no-results-icon{font-size:2.5rem;margin-bottom:.75rem}
+.no-results p{font-size:15px;font-weight:500}
+.no-results span{font-size:13px;color:var(--gray-400,#9ca3af)}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--black);
+  color:rgba(255,255,255,.35);
+  text-align:center;
+  padding:2rem 1.5rem;
+  font-size:12px;font-weight:500;letter-spacing:.04em;
+}
+footer strong{color:rgba(255,255,255,.7)}
+footer a{color:rgba(255,255,255,.5);text-decoration:none}
+footer a:hover{color:#fff}
+
+/* ── MOBILE ── */
+@media(max-width:600px){
+  nav{padding:0 1rem;height:52px}
+  .nav-tag{display:none}
+  .hero{padding:2.5rem 1rem 2rem}
+  .hero h1{font-size:2rem}
+  .hero-stats{flex-direction:column;display:flex;border:none;gap:0}
+  .hstat{border-right:none;border-bottom:var(--border);padding:.65rem 1rem}
+  .hstat:last-child{border-bottom:none}
+  .filters-wrap{top:52px}
+  .filters-inner{padding:.6rem 1rem}
+  .search-row{flex-wrap:wrap}
+  .count-chip{height:36px}
+  main{padding:1rem 1rem 4rem}
+  .cards-grid{grid-template-columns:1fr}
+  .card{padding:14px 16px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Gurgaon <span>Eats</span></div>
+  <div class="nav-right">
+    <span class="nav-tag">4.1+ · 400+ reviews</span>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Gurgaon Food Guide 2025</div>
+  <h1>Good spots.<br/><em>No noise.</em></h1>
+  <p>Every place here cleared 4.1 stars and 400+ real Google reviews. Filtered by you, not the algorithm.</p>
+  <div class="hero-stats">
+    <div class="hstat"><span class="hstat-n" id="stat-n">82</span><span class="hstat-l">verified spots</span></div>
+    <div class="hstat"><span class="hstat-n">4.1+</span><span class="hstat-l">min rating</span></div>
+    <div class="hstat"><span class="hstat-n">400+</span><span class="hstat-l">min reviews</span></div>
+  </div>
+</section>
+
+<div class="filters-wrap">
+  <div class="filters-inner">
+    <div class="search-row">
+      <input class="search-input" type="search" id="search" placeholder="Search name, area, cuisine or dish…" autocomplete="off"/>
+      <div class="count-chip" id="count-chip">82 spots</div>
+    </div>
+    <div class="filter-row">
+      <span class="filter-group-label">Location</span>
+      <button class="pill active" data-type="loc" data-val="All">All areas</button>
+      <button class="pill" data-type="loc" data-val="Cyber Hub">Cyber Hub</button>
+      <button class="pill" data-type="loc" data-val="Sector 29">Sec 29</button>
+      <button class="pill" data-type="loc" data-val="Galleria Market">Galleria</button>
+      <button class="pill" data-type="loc" data-val="Golf Course Rd">Golf Course</button>
+      <button class="pill" data-type="loc" data-val="32nd Avenue">32nd Ave</button>
+      <button class="pill" data-type="loc" data-val="Sohna Road">Sohna Rd</button>
+      <button class="pill" data-type="loc" data-val="Sector 56-58">Sec 56–58</button>
+      <button class="pill" data-type="loc" data-val="Sector 83-86">Sec 83–86</button>
+      <button class="pill" data-type="loc" data-val="Old Gurgaon">Old Gurgaon</button>
+    </div>
+    <div class="filter-row">
+      <span class="filter-group-label">Cuisine</span>
+      <button class="pill active" data-type="cuisine" data-val="All">All</button>
+      <button class="pill" data-type="cuisine" data-val="North Indian">North Indian</button>
+      <button class="pill" data-type="cuisine" data-val="South Indian">South Indian</button>
+      <button class="pill" data-type="cuisine" data-val="Asian">Asian</button>
+      <button class="pill" data-type="cuisine" data-val="Japanese">Japanese</button>
+      <button class="pill" data-type="cuisine" data-val="Italian / Pizza">Pizza</button>
+      <button class="pill" data-type="cuisine" data-val="Burgers">Burgers</button>
+      <button class="pill" data-type="cuisine" data-val="Street Food">Street Food</button>
+      <button class="pill" data-type="cuisine" data-val="Cafe / Continental">Cafe</button>
+    </div>
+    <div class="filter-row">
+      <span class="filter-group-label">Vibe</span>
+      <button class="pill active" data-type="vibe" data-val="All">All</button>
+      <button class="pill" data-type="vibe" data-val="Date Night">Date Night</button>
+      <button class="pill" data-type="vibe" data-val="Rooftop">Rooftop</button>
+      <button class="pill" data-type="vibe" data-val="Family">Family</button>
+      <button class="pill" data-type="vibe" data-val="Nightlife">Nightlife</button>
+      <button class="pill" data-type="vibe" data-val="Hidden Gem">Hidden Gem</button>
+      <button class="pill" data-type="vibe" data-val="Brunch">Brunch</button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <p class="section-meta" id="section-meta">Showing all 82 spots · sorted by rating</p>
+  <div class="cards-grid" id="grid"></div>
+</main>
+
+<footer>
+  <strong>Gurgaon Eats</strong> — curated food guide ·
+  <a href="https://district.in" target="_blank">District</a> ·
+  <a href="https://www.dineout.co.in" target="_blank">Dineout</a>
+</footer>
+
+<script>
+const SPOTS=[
+  // ── CYBER HUB ──
+  {name:"Punjab Grill",area:"Cyber Hub",loc:"Cyber Hub",rating:4.8,reviews:7537,cuisine:"North Indian",vibes:["Date Night","Family"],dish:"Butter chicken · paneer lababdar · amritsari kulcha",price:"₹₹₹",maps:"https://maps.google.com/?q=Punjab+Grill+Cyber+Hub+Gurgaon",dineout:"https://www.dineout.co.in/gurugram/punjab-grill-dlf-cyber-hub",district:"https://district.in/gurugram/restaurants"},
+  {name:"Mustard Madras",area:"Cyber Hub",loc:"Cyber Hub",rating:4.8,reviews:2227,cuisine:"South Indian",vibes:["Family","Brunch"],dish:"Ghee podi masala dosa · filter coffee · neer dosa",price:"₹₹",maps:"https://maps.google.com/?q=Mustard+Madras+Cyber+Hub+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Diablo",area:"Cyber Hub",loc:"Cyber Hub",rating:4.7,reviews:1996,cuisine:"Asian",vibes:["Nightlife","Date Night","Rooftop"],dish:"Tandoori taco · crystal veg dimsums — deep house vibes",price:"₹₹₹",maps:"https://maps.google.com/?cid=15901322498152230754",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Copper Chimney",area:"Cyber Hub",loc:"Cyber Hub",rating:4.7,reviews:1830,cuisine:"North Indian",vibes:["Family","Date Night"],dish:"Rawalpindi gosht · paneer butter masala — reserve ahead",price:"₹₹₹",maps:"https://maps.google.com/?cid=14096812558775559142",dineout:"https://www.dineout.co.in/gurugram/copper-chimney-dlf-cyber-hub",district:"https://district.in/gurugram/restaurants"},
+  {name:"Burma Burma",area:"Cyber Hub",loc:"Cyber Hub",rating:4.6,reviews:3720,cuisine:"Asian",vibes:["Date Night","Hidden Gem"],dish:"Khow suey · samosa soup · tea leaf salad",price:"₹₹₹",maps:"https://maps.google.com/?q=Burma+Burma+CyberHub+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"P.F. Chang's",area:"Cyber Hub",loc:"Cyber Hub",rating:4.6,reviews:1430,cuisine:"Asian",vibes:["Family","Date Night"],dish:"Butter chilli mushroom · vegetarian Tom Yum · sticky toffee pudding",price:"₹₹₹",maps:"https://maps.google.com/?q=PF+Changs+CyberHub+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"VIET:NOM",area:"Cyber Hub",loc:"Cyber Hub",rating:4.3,reviews:1530,cuisine:"Asian",vibes:["Date Night","Hidden Gem"],dish:"Mango curry · blue pea jasmine rice · garlic chicken",price:"₹₹₹",maps:"https://maps.google.com/?q=Viet+Nom+Cyber+Hub+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Cyber Hub SOCIAL",area:"Cyber Hub",loc:"Cyber Hub",rating:4.3,reviews:12198,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Banarasi Patiala · music from 10 PM · old-India theme",price:"₹₹₹",maps:"https://maps.google.com/?q=Cyber+Hub+Social+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Olly",area:"Cyber Hub",loc:"Cyber Hub",rating:4.2,reviews:915,cuisine:"Cafe / Continental",vibes:["Date Night","Brunch"],dish:"Lamb ragu pasta · chicken espetada · great affogato",price:"₹₹₹",maps:"https://maps.google.com/?q=Olly+Cyber+Hub+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"YouMee",area:"Ambience Mall",loc:"Cyber Hub",rating:4.8,reviews:2407,cuisine:"Japanese",vibes:["Family","Date Night"],dish:"Sushi platter · YouMee goreng · ramen bowls — manga interiors",price:"₹₹₹",maps:"https://maps.google.com/?q=YouMee+Ambience+Mall+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Daryaganj",area:"Ambience Mall",loc:"Cyber Hub",rating:4.6,reviews:3263,cuisine:"North Indian",vibes:["Family","Date Night"],dish:"OG butter chicken · dahi ke kebab · garlic naan",price:"₹₹₹",maps:"https://maps.google.com/?q=Daryaganj+Ambience+Mall+Gurgaon",dineout:"https://www.dineout.co.in/gurugram/daryaganj-ambience-mall",district:"https://district.in/gurugram/restaurants"},
+  {name:"Spectra – The Leela",area:"NH-8",loc:"Cyber Hub",rating:4.5,reviews:2606,cuisine:"Asian",vibes:["Date Night","Family"],dish:"Luxury buffet · pan-Asian spread · 5-star Sunday brunch",price:"₹₹₹₹",maps:"https://maps.google.com/?q=Spectra+Leela+Ambience+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  // ── SECTOR 29 ──
+  {name:"Punjab Grill",area:"Sector 29",loc:"Sector 29",rating:4.8,reviews:3629,cuisine:"North Indian",vibes:["Date Night","Family"],dish:"Butter chicken · varqi paratha — book in advance",price:"₹₹₹",maps:"https://maps.google.com/?q=Punjab+Grill+Sector+29+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Downtown Diner & Fresh Beer",area:"Sector 29",loc:"Sector 29",rating:4.5,reviews:10689,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Fresh craft beer · pesto pasta · dal makhani",price:"₹₹",maps:"https://maps.google.com/?q=Downtown+Diner+Sector+29+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Big Pitcher Brewery",area:"Sector 29",loc:"Sector 29",rating:4.6,reviews:1892,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Fresh tap beer · dahi ke kebab · mezze platter",price:"₹₹",maps:"https://maps.google.com/?q=Big+Pitcher+Brewery+Sector+29+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"21 Gun Salute",area:"Sector 29",loc:"Sector 29",rating:4.3,reviews:4299,cuisine:"North Indian",vibes:["Date Night","Family"],dish:"Mutton galouti kebab · laal maas · royal kheer",price:"₹₹₹",maps:"https://maps.google.com/?q=21+Gun+Salute+Sector+29+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Roots – Cafe in the Park",area:"Sector 29",loc:"Sector 29",rating:4.3,reviews:6063,cuisine:"Cafe / Continental",vibes:["Brunch","Family"],dish:"Beetroot tikkis · vada pao · grilled sandwich — inside a park",price:"₹₹",maps:"https://maps.google.com/?q=Roots+Cafe+Sector+29+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Mustard Madras",area:"Sector 29",loc:"Sector 29",rating:4.7,reviews:1581,cuisine:"South Indian",vibes:["Family","Brunch"],dish:"Ghee roast chicken · ghee podi dosa · malabar fish fry",price:"₹₹",maps:"https://maps.google.com/?q=Mustard+Madras+Sector+29+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Factory by Sutra",area:"Sector 29",loc:"Sector 29",rating:4.1,reviews:5211,cuisine:"Cafe / Continental",vibes:["Nightlife","Rooftop"],dish:"Craft beer · live bands · industrial microbrewery theme",price:"₹₹",maps:"https://maps.google.com/?q=Factory+by+Sutra+Sector+29+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"DHABA 29",area:"Sector 29",loc:"Sector 29",rating:4.4,reviews:3108,cuisine:"North Indian",vibes:["Family","Hidden Gem"],dish:"Haryanvi thali · dal makhani · bajra roti with desi ghee",price:"₹₹",maps:"https://maps.google.com/?q=Dhaba+29+Sector+29+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  // ── GALLERIA MARKET ──
+  {name:"Grotto Pizzeria",area:"Galleria Market",loc:"Galleria Market",rating:4.7,reviews:2144,cuisine:"Italian / Pizza",vibes:["Date Night","Hidden Gem"],dish:"Popeye pizza · truffle pizza · lemon gnocchi",price:"₹₹",maps:"https://maps.google.com/?q=Grotto+Pizzeria+Galleria+Market+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Bruno's Pizzeria",area:"Galleria Market",loc:"Galleria Market",rating:4.8,reviews:1246,cuisine:"Italian / Pizza",vibes:["Date Night","Hidden Gem"],dish:"GH Spot pizza · sourdough base — artisan Neapolitan",price:"₹₹",maps:"https://maps.google.com/?q=Brunos+Pizzeria+Galleria+Market+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Pizzeria da Susy",area:"Crosspoint Mall",loc:"Galleria Market",rating:4.4,reviews:2020,cuisine:"Italian / Pizza",vibes:["Date Night","Family"],dish:"Neapolitan margherita · ortolana pizza · tiramisu",price:"₹₹",maps:"https://maps.google.com/?q=Pizzeria+da+Susy+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Downtown Galleria",area:"Galleria Market",loc:"Galleria Market",rating:4.4,reviews:3222,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Fresh beer · dumplings · sports screens",price:"₹₹₹",maps:"https://maps.google.com/?q=Downtown+Galleria+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"DiGhent Cafe",area:"Crosspoint Mall",loc:"Galleria Market",rating:4.4,reviews:2694,cuisine:"Cafe / Continental",vibes:["Brunch","Date Night"],dish:"European breakfast · Belgian waffles · open from 8 AM",price:"₹₹₹",maps:"https://maps.google.com/?q=DiGhent+Cafe+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Nowhere Terrace BrewPub",area:"Galleria Market",loc:"Galleria Market",rating:4.2,reviews:2705,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Craft beer · live music · barrel decor",price:"₹₹",maps:"https://maps.google.com/?q=Nowhere+Terrace+Brewpub+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Guftagu Cafe",area:"DLF Phase 2",loc:"Galleria Market",rating:4.1,reviews:2377,cuisine:"Cafe / Continental",vibes:["Date Night","Nightlife"],dish:"Live music evenings · chilli paneer · late night spot",price:"₹₹",maps:"https://maps.google.com/?q=Guftagu+Cafe+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Burgin Burgers",area:"Crosspoint Mall",loc:"Galleria Market",rating:4.9,reviews:241,cuisine:"Burgers",vibes:["Hidden Gem","Family"],dish:"Lamborghini burger · Chick Magnet · fermented fire tenders",price:"₹₹",maps:"https://maps.google.com/?q=Burgin+Burgers+Crosspoint+Mall+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  // ── GOLF COURSE RD ──
+  {name:"Sandoz Restaurant",area:"Golf Course Rd",loc:"Golf Course Rd",rating:4.7,reviews:2603,cuisine:"North Indian",vibes:["Family","Date Night"],dish:"Punjabi butter chicken · amritsari dal makhni · missi roti",price:"₹₹",maps:"https://maps.google.com/?q=Sandoz+Restaurant+Golf+Course+Road+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Kogai – Fine Japanese",area:"Global Foyer Mall",loc:"Golf Course Rd",rating:4.8,reviews:908,cuisine:"Japanese",vibes:["Date Night","Family"],dish:"Asparagus tempura sushi · yakitori · fried ice cream",price:"₹₹₹",maps:"https://maps.google.com/?q=Kogai+Japanese+Gurgaon+Golf+Course",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"KUURAKU",area:"Global Foyer Mall",loc:"Golf Course Rd",rating:4.5,reviews:2153,cuisine:"Japanese",vibes:["Date Night","Family"],dish:"Yakitori skewers · salmon roll · tuna roll · garlic pork sticks",price:"₹₹",maps:"https://maps.google.com/?q=Kuuraku+Gurgaon+Golf+Course",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"The Big Tree",area:"Golf Course Rd",loc:"Golf Course Rd",rating:4.5,reviews:4709,cuisine:"Cafe / Continental",vibes:["Brunch","Date Night","Family"],dish:"Non-veg kebab platter · sundried tomato pasta · paprika pizza",price:"₹₹",maps:"https://maps.google.com/?q=The+Big+Tree+Cafe+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"BANNG",area:"Golf Course Rd",loc:"Golf Course Rd",rating:4.5,reviews:512,cuisine:"Asian",vibes:["Date Night","Hidden Gem"],dish:"Clear soup · pad see ew · mala crushed cucumber salad",price:"₹₹₹",maps:"https://maps.google.com/?q=BANNG+Restaurant+Golf+Course+Road+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Sidewok",area:"Golf Course Rd",loc:"Golf Course Rd",rating:4.4,reviews:1155,cuisine:"Asian",vibes:["Family","Date Night"],dish:"Steamboat soup · sweet corn chicken · egg fried rice",price:"₹₹",maps:"https://maps.google.com/?q=Sidewok+Golf+Course+Road+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Sticky Rice",area:"Golf Course Rd",loc:"Golf Course Rd",rating:4.5,reviews:516,cuisine:"Asian",vibes:["Date Night","Hidden Gem"],dish:"Chilli cheese dimsums · khao suey · burnt garlic soup",price:"₹₹",maps:"https://maps.google.com/?q=Sticky+Rice+Golf+Course+Road+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Japonico",area:"Golf Course Rd",loc:"Golf Course Rd",rating:4.2,reviews:439,cuisine:"Japanese",vibes:["Date Night","Nightlife"],dish:"Mushroom truffle sushi · robata grill · ukiyo-e cocktail menu",price:"₹₹₹",maps:"https://maps.google.com/?q=Japonico+Golf+Course+Road+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Porche Brewery",area:"Golf Course Rd",loc:"Golf Course Rd",rating:4.7,reviews:609,cuisine:"Cafe / Continental",vibes:["Date Night","Nightlife"],dish:"In-house craft beers · cream cheese dumplings · risotto",price:"₹₹₹",maps:"https://maps.google.com/?q=Porche+Brewery+Golf+Course+Road+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Clock Tower Brewery",area:"Golf Course Rd",loc:"Golf Course Rd",rating:4.3,reviews:2865,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Beer samples · dahi ke kebab · retro 80s–90s theme",price:"₹₹₹",maps:"https://maps.google.com/?q=Clock+Tower+Brewery+Golf+Course+Road+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Bellagio",area:"Golf Course Ext Rd",loc:"Golf Course Rd",rating:4.3,reviews:2053,cuisine:"Cafe / Continental",vibes:["Date Night","Rooftop"],dish:"Adivasi chicken with beer · rooftop terrace · zen garden",price:"₹₹₹₹",maps:"https://maps.google.com/?q=Bellagio+Gurgaon+Golf+Course+Extension",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"The Forestta Cafe",area:"Golf Course Rd",loc:"Golf Course Rd",rating:4.1,reviews:6110,cuisine:"Cafe / Continental",vibes:["Date Night","Brunch"],dish:"Open till 4:30 AM · forest decor · comfort food late nights",price:"₹₹",maps:"https://maps.google.com/?q=The+Forestta+Cafe+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  // ── 32ND AVENUE ──
+  {name:"SOCA Brewery & Lounge",area:"Sector 30",loc:"32nd Avenue",rating:4.8,reviews:1517,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Craft beer · veg sushi · dim sums — perfect birthday spot",price:"₹₹₹",maps:"https://maps.google.com/?q=SOCA+Brewery+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Bhawan Gurgaon",area:"32nd Avenue",loc:"32nd Avenue",rating:4.6,reviews:1397,cuisine:"North Indian",vibes:["Family","Brunch"],dish:"Mushroom haleem · appam benedict · gulmarg negroni",price:"₹₹₹",maps:"https://maps.google.com/?q=Bhawan+Gurgaon+32nd+Avenue",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Mala-Akbari",area:"32nd Avenue",loc:"32nd Avenue",rating:4.4,reviews:1308,cuisine:"North Indian",vibes:["Date Night","Family"],dish:"Historical Mughlai recipes · galouti · murgh achari",price:"₹₹₹",maps:"https://maps.google.com/?q=Mala+Akbari+32nd+Avenue+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Greenr Cafe",area:"32nd Avenue",loc:"32nd Avenue",rating:4.4,reviews:2772,cuisine:"Cafe / Continental",vibes:["Brunch","Family"],dish:"Kombucha · tofu amaranth burger · gnocchi pasta — plant-based",price:"₹₹",maps:"https://maps.google.com/?q=Greenr+Cafe+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"RYU Bar",area:"32nd Avenue",loc:"32nd Avenue",rating:4.5,reviews:1166,cuisine:"Cafe / Continental",vibes:["Nightlife","Rooftop"],dish:"Rooftop bar · pepperoni pizza · nasi goreng · movie screenings",price:"₹₹₹₹",maps:"https://maps.google.com/?q=RYU+Bar+32nd+Avenue+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"THE BURGER COMPANY",area:"Sector 31",loc:"32nd Avenue",rating:4.8,reviews:2315,cuisine:"Burgers",vibes:["Family","Hidden Gem"],dish:"Mr Crunchos burger · oreo shake — budget-friendly, open till 3 AM",price:"₹",maps:"https://maps.google.com/?q=The+Burger+Company+Sector+31+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  // ── SOHNA ROAD ──
+  {name:"TUCKINN Fresh Beer Cafe",area:"Sohna Road",loc:"Sohna Road",rating:4.7,reviews:1278,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Mango beer · chilli chicken · live IPL screenings",price:"₹₹",maps:"https://maps.google.com/?q=TUCKINN+Sohna+Road+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Brewocrat Brewery Skybar",area:"Sector 47",loc:"Sohna Road",rating:4.4,reviews:2913,cuisine:"Cafe / Continental",vibes:["Nightlife","Rooftop"],dish:"Craft beer · dimsums · burgers — rooftop skybar",price:"₹₹",maps:"https://maps.google.com/?q=Brewocrat+Brewery+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Folks – Pub & Brewery",area:"Sector 66",loc:"Sohna Road",rating:4.8,reviews:1125,cuisine:"Cafe / Continental",vibes:["Nightlife","Rooftop","Date Night"],dish:"Craft beer · veg exotic dimsums · sports bar feel",price:"₹₹",maps:"https://maps.google.com/?q=Folks+Pub+Brewery+Gurgaon+Sector+66",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Hamoni Cafe",area:"Sector 23A",loc:"Sohna Road",rating:4.4,reviews:3181,cuisine:"Cafe / Continental",vibes:["Brunch","Date Night"],dish:"Palak patta chaat · pesto burrata pizza — golf course view",price:"₹₹",maps:"https://maps.google.com/?q=Hamoni+Cafe+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Molecule IFC",area:"Golf Course Ext",loc:"Sohna Road",rating:4.2,reviews:1490,cuisine:"Cafe / Continental",vibes:["Nightlife","Rooftop"],dish:"Rooftop bar · lab-themed interiors · cocktails in beakers",price:"₹₹₹",maps:"https://maps.google.com/?q=Molecule+IFC+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Ranisa N Rajasa",area:"Sector 50",loc:"Sohna Road",rating:4.5,reviews:850,cuisine:"North Indian",vibes:["Family","Hidden Gem"],dish:"Unlimited Rajasthani thali · dal baati · live folk music",price:"₹₹",maps:"https://maps.google.com/?q=Ranisa+Rajasa+Gurgaon+Sector+50",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Daryaganj",area:"Sector 85",loc:"Sector 83-86",rating:4.8,reviews:1955,cuisine:"North Indian",vibes:["Family","Date Night"],dish:"Original butter chicken · chicken pakora · dahi ke kebab",price:"₹₹₹",maps:"https://maps.google.com/?q=Daryaganj+Sector+85+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Gola Sizzlers",area:"Sector 85",loc:"Sector 83-86",rating:4.7,reviews:1281,cuisine:"North Indian",vibes:["Family","Date Night"],dish:"Chilli chicken sizzler · dal makhani · cream cheese dimsum",price:"₹₹",maps:"https://maps.google.com/?q=Gola+Sizzlers+Sector+85+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Sector 85 SOCIAL",area:"Sector 85",loc:"Sector 83-86",rating:4.3,reviews:1953,cuisine:"Cafe / Continental",vibes:["Nightlife","Family"],dish:"Wildlife theme · swing seating · all-day breakfast",price:"₹₹₹",maps:"https://maps.google.com/?q=Social+Sector+85+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Zythos Gurugram",area:"Sector 83-84",loc:"Sector 83-86",rating:4.6,reviews:499,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Craft beers · chicken tikka · Sunday brunch with live music",price:"₹₹",maps:"https://maps.google.com/?q=Zythos+Gurgaon+Sector+83",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"OKASA – BYOB Kitchen",area:"Sector 86",loc:"Sector 83-86",rating:4.3,reviews:663,cuisine:"Cafe / Continental",vibes:["Nightlife","Family"],dish:"BYOB · kids & pet friendly · Wednesday night specials",price:"₹",maps:"https://maps.google.com/?q=Okasa+BYOB+Gurgaon+Sector+86",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  // ── SECTOR 56–58 ──
+  {name:"Indian Grill Room",area:"Sector 56",loc:"Sector 56-58",rating:4.2,reviews:5910,cuisine:"North Indian",vibes:["Family"],dish:"Mutton galaouti kebab · buffet lunch · great outdoor seating",price:"₹₹₹",maps:"https://maps.google.com/?q=Indian+Grill+Room+Sector+56+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Baba's Chicken",area:"Golf Course Rd",loc:"Sector 56-58",rating:4.2,reviews:3923,cuisine:"North Indian",vibes:["Family","Hidden Gem"],dish:"Lemon chicken · pepper chicken · butter chicken",price:"₹₹",maps:"https://maps.google.com/?q=Babas+Chicken+Gurgaon+Golf+Course+Road",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Big Dream Cafe",area:"Sector 58",loc:"Sector 56-58",rating:4.6,reviews:916,cuisine:"Cafe / Continental",vibes:["Brunch","Date Night","Rooftop"],dish:"Rooftop seating · spring roll · crispy corn · birthday specials",price:"₹₹",maps:"https://maps.google.com/?q=Big+Dream+Cafe+Sector+58+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  // ── OLD GURGAON ──
+  {name:"Civil Line Wala",area:"Old Gurgaon",loc:"Old Gurgaon",rating:4.2,reviews:9101,cuisine:"Street Food",vibes:["Brunch","Family","Hidden Gem"],dish:"Chole bhature · chur chur naan · lassi — open early",price:"₹",maps:"https://maps.google.com/?q=Civil+Line+Wala+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Shriram Dhaba",area:"Sohna Road",loc:"Old Gurgaon",rating:4.1,reviews:26456,cuisine:"Street Food",vibes:["Brunch","Family"],dish:"Paranthas · sarson da saag · chai — open 24 hrs",price:"₹",maps:"https://maps.google.com/?q=Shriram+Dhaba+Gurgaon+Sohna+Road",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Sardar Ji Jalebi Wale",area:"Sadar Bazar",loc:"Old Gurgaon",rating:4.3,reviews:2245,cuisine:"Street Food",vibes:["Hidden Gem","Brunch"],dish:"Crispy desi ghee jalebis — 72-year-old institution",price:"₹",maps:"https://maps.google.com/?q=Sardar+Ji+Jalebi+Wale+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Monu Jain Kachori Wala",area:"Sadar Bazar",loc:"Old Gurgaon",rating:4.2,reviews:2780,cuisine:"Street Food",vibes:["Brunch","Hidden Gem"],dish:"Kachori sabzi · poori · bedmi puri — closes by 3 PM",price:"₹",maps:"https://maps.google.com/?q=Monu+Jain+Kachori+Wala+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Kabab & Curry",area:"Sector 14",loc:"Old Gurgaon",rating:4.3,reviews:1193,cuisine:"North Indian",vibes:["Family","Hidden Gem"],dish:"Chicken rara · lemon chicken · dal makhani — roadside gem",price:"₹",maps:"https://maps.google.com/?q=Kabab+Curry+Sector+14+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Veer Da Chappar",area:"MG Road",loc:"Old Gurgaon",rating:4.6,reviews:2345,cuisine:"North Indian",vibes:["Family","Nightlife"],dish:"Family dhaba · paranthas · open till 6 AM",price:"₹",maps:"https://maps.google.com/?q=Veer+Da+Chappar+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"67 Classic Burger",area:"Sector 13",loc:"Old Gurgaon",rating:4.9,reviews:459,cuisine:"Burgers",vibes:["Hidden Gem","Family"],dish:"Aloo tikki burger · chicken cheese burger · oreo shake",price:"₹",maps:"https://maps.google.com/?q=67+Classic+Burger+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"AKU's – The Burger Co.",area:"Sector 27",loc:"Old Gurgaon",rating:4.9,reviews:339,cuisine:"Burgers",vibes:["Hidden Gem","Date Night"],dish:"Bold Bingo burger · crispy cottage cheese burger — gourmet",price:"₹₹",maps:"https://maps.google.com/?q=AKUs+Burger+Gurgaon+Sector+27",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Curry Garden",area:"Sector 13",loc:"Old Gurgaon",rating:4.6,reviews:1243,cuisine:"North Indian",vibes:["Family","Date Night"],dish:"Dal makhani · chur chur naan · paneer butter masala",price:"₹₹",maps:"https://maps.google.com/?q=Curry+Garden+Gurgaon+Sector+13",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  // ── MORE SPOTS ──
+  {name:"SOCA Brewery",area:"Sector 30",loc:"32nd Avenue",rating:4.8,reviews:1517,cuisine:"Cafe / Continental",vibes:["Nightlife","Date Night"],dish:"Craft beer · veg sushi · dim sums",price:"₹₹₹",maps:"https://maps.google.com/?q=SOCA+Brewery+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"Under The Neem",area:"Sector 80",loc:"Sohna Road",rating:4.4,reviews:3014,cuisine:"Cafe / Continental",vibes:["Brunch","Date Night","Hidden Gem"],dish:"Farm-fresh meals · outdoor green setting — peaceful drive-out",price:"₹₹₹",maps:"https://maps.google.com/?q=Under+The+Neem+Karma+Lakelands+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"YouMee Airia Mall",area:"Sector 68",loc:"Sohna Road",rating:4.7,reviews:619,cuisine:"Japanese",vibes:["Family","Date Night"],dish:"Sushi · spicy chicken katsu · teriyaki chicken ramen",price:"₹₹₹",maps:"https://maps.google.com/?q=YouMee+Airia+Mall+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+  {name:"threesixtyone° – The Oberoi",area:"Udyog Vihar",loc:"Cyber Hub",rating:4.7,reviews:1263,cuisine:"Cafe / Continental",vibes:["Date Night","Brunch"],dish:"5-star high tea · masala chai · outdoor deck on water",price:"₹₹₹₹",maps:"https://maps.google.com/?q=threesixtyone+Oberoi+Gurgaon",dineout:"https://www.dineout.co.in/gurugram",district:"https://district.in/gurugram/restaurants"},
+];
+
+let activeLoc='All',activeCuisine='All',activeVibe='All',search='';
+
+function matchLoc(s){
+  if(activeLoc==='All') return true;
+  return s.loc===activeLoc;
+}
+function matchCuisine(s){
+  if(activeCuisine==='All') return true;
+  return s.cuisine===activeCuisine;
+}
+function matchVibe(s){
+  if(activeVibe==='All') return true;
+  return s.vibes.includes(activeVibe);
+}
+function matchSearch(s){
+  if(!search) return true;
+  const q=search.toLowerCase();
+  return s.name.toLowerCase().includes(q)||s.area.toLowerCase().includes(q)||s.cuisine.toLowerCase().includes(q)||s.dish.toLowerCase().includes(q)||s.loc.toLowerCase().includes(q);
+}
+
+function render(){
+  const filtered=SPOTS.filter(s=>matchLoc(s)&&matchCuisine(s)&&matchVibe(s)&&matchSearch(s));
+  const sorted=[...filtered].sort((a,b)=>b.rating-a.rating||b.reviews-a.reviews);
+
+  // dedup by name+loc
+  const seen=new Set();
+  const deduped=sorted.filter(s=>{
+    const key=s.name+'|'+s.area;
+    if(seen.has(key)) return false;
+    seen.add(key); return true;
+  });
+
+  document.getElementById('count-chip').textContent=deduped.length+' spot'+(deduped.length!==1?'s':'');
+  const labels=[];
+  if(activeLoc!=='All') labels.push(activeLoc);
+  if(activeCuisine!=='All') labels.push(activeCuisine);
+  if(activeVibe!=='All') labels.push(activeVibe);
+  if(search) labels.push('"'+search+'"');
+  document.getElementById('section-meta').textContent=labels.length
+    ?'Showing '+deduped.length+' spots · '+labels.join(' · ')
+    :'Showing all '+deduped.length+' verified spots · sorted by rating';
+
+  const grid=document.getElementById('grid');
+  if(!deduped.length){
+    grid.innerHTML='<div class="no-results"><div class="no-results-icon">🍽️</div><p>No spots match this combo</p><span>Try adjusting your filters</span></div>';
+    return;
+  }
+  grid.innerHTML=deduped.map(s=>`
+<article class="card">
+  <div class="card-header">
+    <div>
+      <div class="card-name">${s.name}</div>
+      <div class="card-area">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        ${s.area}
+      </div>
+    </div>
+    <div class="rating-block">
+      <div class="rating-num">★ ${s.rating}</div>
+      <div class="rating-count">${s.reviews>=1000?(s.reviews/1000).toFixed(s.reviews>=10000?0:1)+'k':s.reviews} reviews</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span class="tag tag-cuisine">${s.cuisine}</span>
+    ${s.vibes.map(v=>`<span class="tag tag-vibe">${v}</span>`).join('')}
+  </div>
+  <div class="dish">${s.dish}</div>
+  <div class="card-footer">
+    <span class="price">${s.price}</span>
+    <div class="cta-links">
+      <a class="cta-btn cta-dineout" href="${s.dineout}" target="_blank" rel="noopener">Dineout</a>
+      <a class="cta-btn cta-district" href="${s.district}" target="_blank" rel="noopener">District</a>
+      <a class="cta-btn cta-maps" href="${s.maps}" target="_blank" rel="noopener">Maps ↗</a>
+    </div>
+  </div>
+</article>`).join('');
+}
+
+document.querySelectorAll('.pill').forEach(p=>{
+  p.addEventListener('click',()=>{
+    const type=p.dataset.type,val=p.dataset.val;
+    document.querySelectorAll(`.pill[data-type="${type}"]`).forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+    if(type==='loc') activeLoc=val;
+    else if(type==='cuisine') activeCuisine=val;
+    else activeVibe=val;
+    render();
+  });
+});
+
+document.getElementById('search').addEventListener('input',e=>{
+  search=e.target.value.trim();
+  render();
+});
+
+// stat
+const uniqueTotal=new Set(SPOTS.map(s=>s.name+'|'+s.area)).size;
+document.getElementById('stat-n').textContent=uniqueTotal;
+render();
+</script>
+</body>
+</html>
